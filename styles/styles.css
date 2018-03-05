@@ -65,3 +65,13 @@ body {
 .portfolio__img-greenpay {
 	background-image: url(../img/greenpay.jpg);
 }
+
+@media screen and (max-width: 768px) {
+	.portfolio__img {
+		float: none;
+		margin-bottom: 50px;
+		width: 100%;
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
