@@ -3,11 +3,12 @@
 const { parallel, series, watch, src, dest } = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     sass = require('gulp-sass'),
-    rename = require('gulp-rename'),
     babel = require('gulp-babel'),
+    uglify = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps'),
     cssmin = require('gulp-clean-css'),
     rigger = require('gulp-rigger'),
+    del = require('del'),
     browserSync = require("browser-sync"),
     reload = browserSync.reload;
 
@@ -38,6 +39,10 @@ const server = {
     logPrefix: "jtwbm"
 };
 
+function cleanBuild() {
+    return del([config.build.folder, config.build.folder + '/**/*']);
+}
+
 function styles() {
     return src(config.src.styles)
             .pipe(sourcemaps.init())
@@ -45,14 +50,20 @@ function styles() {
             .pipe(autoprefixer({
                 browsers: ['last 3 versions', 'ie > 10']
             }))
+            .pipe(dest(config.build.styles))
             .pipe(sourcemaps.write("./sourcemaps"))
             .pipe(dest(config.build.styles))
-            .pipe(cssmin({compatibility: 'ie10'}))
-            .pipe(rename({
-                suffix: '.min'
-            }))
-            .pipe(dest(config.build.styles))
             .pipe(reload({stream: true}));
+}
+
+function stylesProduction() {
+     return src(config.src.styles)
+            .pipe(sass())
+            .pipe(autoprefixer({
+                browsers: ['last 3 versions', 'ie > 10']
+            }))
+            .pipe(cssmin({compatibility: 'ie10'}))
+            .pipe(dest(config.build.styles));
 }
 
 function scripts() {
@@ -61,9 +72,18 @@ function scripts() {
                 presets: ['@babel/preset-env']
             }))
             .pipe(sourcemaps.init())
-            .pipe(sourcemaps.write("./sourcemaps"))
             .pipe(dest(config.build.scripts))
+            .pipe(sourcemaps.write("./sourcemaps"))
             .pipe(reload({stream: true}));
+}
+
+function scriptsProduction() {
+    return src(config.src.scripts)
+            .pipe(babel({
+                presets: ['@babel/preset-env']
+            }))
+            .pipe(uglify())
+            .pipe(dest(config.build.scripts));
 }
 
 function html() {
@@ -90,9 +110,10 @@ function webserver() {
     browserSync(server);
 }
 
-exports.build = parallel(styles, scripts, html, fonts);
-exports.watch = series(parallel(styles, scripts, html, fonts), parallel(webserver, watcher));
-
+exports.clean = cleanBuild;
+exports.build = series(cleanBuild, parallel(styles, scripts, html, fonts));
+exports.watch = series(cleanBuild, parallel(styles, scripts, html, fonts), parallel(webserver, watcher));
+exports.prod = series(cleanBuild, parallel(stylesProduction, scriptsProduction, html, fonts));
 // if (process.env.NODE_ENV === 'production') {
 //   exports.build = series(transpile, minify);
 // } else {

@@ -4,8 +4,10 @@
   "description": "jtwbm portfolio",
   "main": "index.js",
   "scripts": {
+    "clean": "gulp clean",
     "build": "gulp build",
-    "dev": "gulp watch"
+    "dev": "gulp watch",
+    "prod": "gulp prod"
   },
   "repository": {
     "type": "git",
@@ -21,13 +23,15 @@
     "@babel/core": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
     "browser-sync": "^2.26.3",
+    "del": "^4.0.0",
     "gulp": "^4.0.0",
     "gulp-autoprefixer": "^6.0.0",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.0.0",
-    "gulp-rename": "^1.4.0",
     "gulp-rigger": "^0.5.8",
     "gulp-sass": "^4.0.2",
-    "gulp-sourcemaps": "^2.6.5"
-  }
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-uglify": "^3.0.2"
+  },
+  "dependencies": {}
 }

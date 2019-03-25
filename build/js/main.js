@@ -1,2 +1,1 @@
-'use strict';
-//# sourceMappingURL=sourcemaps/main.js.map
+"use strict";var welcome="welcome!";console.log(welcome);
