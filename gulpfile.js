@@ -112,7 +112,7 @@ function webserver() {
 
 exports.clean = cleanBuild;
 exports.build = series(cleanBuild, parallel(styles, scripts, html, fonts));
-exports.watch = series(cleanBuild, parallel(styles, scripts, html, fonts), parallel(webserver, watcher));
+exports.default = series(cleanBuild, parallel(styles, scripts, html, fonts), parallel(webserver, watcher));
 exports.prod = series(cleanBuild, parallel(stylesProduction, scriptsProduction, html, fonts));
 // if (process.env.NODE_ENV === 'production') {
 //   exports.build = series(transpile, minify);

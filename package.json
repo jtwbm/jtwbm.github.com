@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "gulp clean",
     "build": "gulp build",
-    "dev": "gulp watch",
+    "dev": "gulp",
     "prod": "gulp prod"
   },
   "repository": {
