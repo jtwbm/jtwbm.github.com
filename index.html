@@ -13,8 +13,8 @@
     apiId: '7571150',
   });
   VK.Widgets.Auth('vk_auth', {
-    onAuth: function(data) {
-      console.log(data)
+    onAuth: function(user) {
+      console.log(user.uid)
     },
   });
 </script>
