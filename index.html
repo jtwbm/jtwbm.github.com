@@ -12,9 +12,10 @@
   VK.init({
     apiId: '7571150',
   });
-  VK.Widgets.Auth('vk_auth', {});
-  VK.Observer.subscribe('auth.login', function(data) {
-    console.log(123, data);
+  VK.Widgets.Auth('vk_auth', {
+    onAuth: function(data) {
+      console.log(data)
+    },
   });
 </script>
 </body>
